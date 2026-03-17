@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -82,12 +83,12 @@
 
     <div id="jumpscare-overlay">
         <video id="scary-video" muted playsinline>
-            <source src="https://drive.google.com/uc?export=download&id=1Yeg0rUVVWYl4OBkC0Q1NYUKYF2TBAr-i" type="video/mp4">
+            <source src="video.mp4" type="video/mp4">
         </video>
     </div>
 
     <audio id="scary-audio">
-        <source src="https://drive.google.com/uc?export=download&id=1hDFTKFJ3rGXwNQMpQB7KEulN9dL7gexv" type="audio/mpeg">
+        <source src="audio.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -101,10 +102,13 @@
             btn.style.display = 'none';
             confirmText.style.display = 'block';
 
-            // Pausa psicologica prima del jumpscare
             setTimeout(() => {
                 confirmText.style.display = 'none';
                 overlay.style.display = 'flex';
+                
+                // Carichiamo i file per sicurezza prima di riprodurli
+                video.load();
+                audio.load();
                 
                 video.play().catch(e => console.log("Errore video:", e));
                 audio.play().catch(e => console.log("Errore audio:", e));
@@ -114,7 +118,6 @@
                 }
             }, 2000);
 
-            // Resetta tutto dopo 10 secondi per permettere un altro giro
             setTimeout(() => {
                 overlay.style.display = 'none';
                 video.pause();
