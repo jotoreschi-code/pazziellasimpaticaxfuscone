@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verità</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            font-family: 'Times New Roman', serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        #main-container {
+            text-align: center;
+            z-index: 5;
+        }
+
+        #kick-button {
+            padding: 20px 60px;
+            font-size: 1.5rem;
+            color: #ffffff;
+            background: transparent;
+            border: 1px solid #ffffff;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            transition: all 0.5s ease;
+        }
+
+        #kick-button:hover {
+            background: #ffffff;
+            color: #000;
+        }
+
+        #confirmation-text {
+            display: none;
+            font-size: 2.5rem;
+            letter-spacing: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        #jumpscare-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: black;
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(180%) brightness(0.7);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="main-container">
+        <button id="kick-button">Accedi alla Verità</button>
+        <div id="confirmation-text">Sei sicuro?</div>
+    </div>
+
+    <div id="jumpscare-overlay">
+        <video id="scary-video" muted playsinline>
+            <source src="https://drive.google.com/uc?export=download&id=1Yeg0rUVVWYl4OBkC0Q1NYUKYF2TBAr-i" type="video/mp4">
+        </video>
+    </div>
+
+    <audio id="scary-audio">
+        <source src="https://drive.google.com/uc?export=download&id=1hDFTKFJ3rGXwNQMpQB7KEulN9dL7gexv" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const btn = document.getElementById('kick-button');
+        const confirmText = document.getElementById('confirmation-text');
+        const overlay = document.getElementById('jumpscare-overlay');
+        const video = document.getElementById('scary-video');
+        const audio = document.getElementById('scary-audio');
+
+        btn.addEventListener('click', () => {
+            btn.style.display = 'none';
+            confirmText.style.display = 'block';
+
+            // Pausa psicologica prima del jumpscare
+            setTimeout(() => {
+                confirmText.style.display = 'none';
+                overlay.style.display = 'flex';
+                
+                video.play().catch(e => console.log("Errore video:", e));
+                audio.play().catch(e => console.log("Errore audio:", e));
+
+                if (navigator.vibrate) {
+                    navigator.vibrate([100, 50, 100, 50, 1000]);
+                }
+            }, 2000);
+
+            // Resetta tutto dopo 10 secondi per permettere un altro giro
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                video.pause();
+                video.currentTime = 0;
+                audio.pause();
+                audio.currentTime = 0;
+                btn.style.display = 'block';
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
